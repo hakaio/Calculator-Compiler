@@ -4,9 +4,9 @@ A micro compiler for parsing boolean and arithmetic instructions
 # How to compile 
 
  ```C
- flex bcalc.l
- bison bcalc.y -d
- gcc bcalc.tab.c -ll -ly
+ flex calc.l
+ bison calc.y -d
+ gcc calc.tab.c -ll -ly
  ```
  or use single command make
  
