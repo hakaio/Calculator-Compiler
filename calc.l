@@ -4,18 +4,37 @@
     #include "calc.tab.h"
 %}
 
+%s BOOL ARITHMETIC
+
 %%
+
+arithmetic { yylval = *yytext; BEGIN ARITHMETIC; return MODE; } 
+boolean    { yylval = *yytext; BEGIN BOOL; return MODE; }
 
 [a-z]		{
 				yylval = *yytext - 'a';
 				return VARIABLE;
         	}
 
-[0-9]+      {
+<ARITHMETIC>[0-9]+      {
                 yylval = atoi(yytext);
                 return INTEGER;
             }
+			
+<BOOL>[0-1]+        {
+				yylval = atoi(yytext);
+				return BOOLEAN; 
+				
+            }		
 
+<BOOL>not return NOT;
+<BOOL>and return AND;
+<BOOL>or return OR;
+<BOOL>xor return XOR;
+<BOOL>xnor return XNOR;
+<BOOL>nand return NAND;
+<BOOL>nor return NOR;	
+			
 [-+()=/*\n]      return *yytext;
 
 ,           return *yytext;
