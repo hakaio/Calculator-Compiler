@@ -10,6 +10,7 @@
 %token AND OR NOT NAND NOR XOR XNOR
 %left '+' '-'
 %left '*' '/'
+%left AND OR NOT NAND NOR XOR XNOR
 
 %%
 
