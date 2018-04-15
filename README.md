@@ -16,7 +16,7 @@ A micro compiler for parsing boolean and arithmetic instructions
 # How to Run
 
  ```c
- ./a.out
+ ./a.out console/<filename>
  ````
 
  After running the a.out file, your calculator runs and you have to enter the input
