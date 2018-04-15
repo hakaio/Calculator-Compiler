@@ -21,7 +21,7 @@ boolean    { yylval = *yytext; BEGIN BOOL; return MODE; }
                 return INTEGER;
             }
 			
-<BOOL>[0-1]+        {
+<BOOL>[0-1]        {
 				yylval = atoi(yytext);
 				return BOOLEAN; 
 				
@@ -35,13 +35,15 @@ boolean    { yylval = *yytext; BEGIN BOOL; return MODE; }
 <BOOL>nand return NAND;
 <BOOL>nor return NOR;	
 			
-[-+()=/*\n]      return *yytext;
+[-+()=/*]      return *yytext;
 
 ,           return *yytext;
 
-[ \t]       ; /* skip whitespace */
+[ \t]       ; 
+[ \n]       { yylineno = yylineno +1; return *yytext; }
 
 .           yyerror("invalid character");
+
 
 %%
 

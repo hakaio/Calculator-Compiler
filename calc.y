@@ -20,7 +20,7 @@ program:
         ;
 		
 statement:
-		  MODE					     { if($1==97){printf("Arithmetic Mode Activated\n");} else{printf("Boolean Mode Activated\n");} }
+		  MODE					     { if($1==97){printf("Switched to Arithmetic Mode\n");} else{printf("Switched to Boolean Mode\n");} }
 	 	  |arith_expr			             { printf("%d\n", $1); }
 		  |bool_expr                                 { printf("%d\n", $1); }
 		  |VARIABLE '=' arith_expr                   { sym[$1] = $3; }
@@ -37,7 +37,7 @@ arith_expr:
         | arith_expr '+' arith_expr           { $$ = $1 + $3; }
         | arith_expr '-' arith_expr           { $$ = $1 - $3; }
 	| arith_expr '*' arith_expr           { $$ = $1 * $3; }
-	| arith_expr '/' arith_expr 	      { $$ = $1/$3;   }
+	| arith_expr '/' arith_expr 	      { if($3==0){yyerror("Division by 0 error");} else{$$ = $1/$3;} }
 	| '(' arith_expr ')' 		      { $$ = $2; }
         ;
 
@@ -58,11 +58,26 @@ bool_expr:
 #include "lex.yy.c"
 void yyerror(char *s) {
 
-    fprintf(stderr, "%s\n", s);
+    fprintf(stderr, "%s at line: %d\n", s,yylineno);
 }
 
-int main(void) {
-    yyparse();
+int main(int argc , char * argv[]) {
+	
+	if(argv[1] != "console"){
+		
+		yyin = fopen(argv[1],"r");
+	}
+	
+    if(!yyparse()){
+		
+		printf("Parsing Complete\n");
+	}
+	else{
+		
+		printf("Parsing Failed\n");
+	}
+	
+	fclose(yyin);
     return 0;
 }
 
